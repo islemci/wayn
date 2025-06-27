@@ -1,0 +1,76 @@
+{
+  "name": "@usewayn/widget",
+  "version": "0.0.1",
+  "description": "Universal widget component for Wayn PoW CAPTCHA - works with HTML/JavaScript and React",
+  "keywords": [
+    "captcha",
+    "pow",
+    "wayn",
+    "widget",
+    "react",
+    "web-components",
+    "custom-elements"
+  ],
+  "homepage": "https://github.com/islemci/wayn#readme",
+  "bugs": {
+    "url": "https://github.com/islemci/wayn/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/islemci/wayn.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Mustafa YILDIZ",
+  "type": "module",
+  "main": "dist/wayn-widget.js",
+  "module": "dist/wayn-widget.esm.js",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/wayn-widget.min.js",
+  "jsdelivr": "dist/wayn-widget.min.js",
+  "exports": {
+    ".": {
+      "import": "./dist/wayn-widget.esm.js",
+      "require": "./dist/wayn-widget.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./react": {
+      "import": "./dist/react.js",
+      "types": "./dist/react.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "example.html",
+    "example.tsx"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:core && npm run build:react && npm run build:bundle",
+    "build:core": "tsc -p tsconfig.core.json",
+    "build:react": "tsc -p tsconfig.react.json",
+    "build:bundle": "node build.js",
+    "dev": "npm run build:core -- --watch",
+    "prepublishOnly": "npm run build",
+    "demo": "open example.html"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.4",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "esbuild": "^0.19.12",
+    "typescript": "^5.8.3"
+  }
+}

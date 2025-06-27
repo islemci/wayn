@@ -1,0 +1,35 @@
+{
+  "name": "@usewayn/server",
+  "version": "0.0.1",
+  "description": "Server-side module to handle PoW transactions for Wayn applicants",
+  "keywords": [
+    "captcha",
+    "pow",
+    "wayn"
+  ],
+  "homepage": "https://github.com/islemci/wayn#readme",
+  "bugs": {
+    "url": "https://github.com/islemci/wayn/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/islemci/wayn.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Mustafa YILDIZ",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}

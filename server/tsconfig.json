@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "checkJs": true,
+    "allowJs": true,
+    "declaration": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "outDir": "./dist"
+  },
+  "include": ["index.ts", "src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "test", "tests"]
+}

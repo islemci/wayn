@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayn Widget Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .captcha-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .captcha-section h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .theme-switcher {
+            margin-bottom: 20px;
+        }
+        
+        .theme-switcher button {
+            margin-right: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .theme-switcher button.active {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Wayn CAPTCHA Demo</h1>
+        <p>This demo shows how to integrate the Wayn PoW CAPTCHA widget into your HTML forms.</p>
+        
+        <div class="theme-switcher">
+            <button id="lightTheme" class="active">Light Theme</button>
+            <button id="darkTheme">Dark Theme</button>
+        </div>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            
+            <div class="captcha-section">
+                <h3>🤖 Human Verification</h3>
+                <p>Please complete the CAPTCHA below to verify you're human:</p>
+                
+                <!-- Wayn Widget -->
+                <wayn-widget 
+                    id="waynWidget"
+                    api="https://wayn.tekir.co"
+                    color="light"
+                    worker-count="4"
+                    data-i18n-initial-state="I'm a human"
+                    data-i18n-verifying="Verifying..."
+                    data-i18n-verified="You're a human ✓"
+                    data-i18n-error="Error. Try again.">
+                </wayn-widget>
+            </div>
+            
+            <button type="submit" id="submitBtn" disabled>
+                Submit Form
+            </button>
+        </form>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <h3>🔧 Widget Status</h3>
+            <p><strong>Token:</strong> <span id="tokenDisplay">None</span></p>
+            <p><strong>Verified:</strong> <span id="verifiedDisplay">No</span></p>
+            <p><strong>Progress:</strong> <span id="progressDisplay">0%</span></p>
+        </div>
+    </div>
+
+    <!-- Load Wayn Widget -->
+    <script src="../dist/wayn-widget.min.js"></script>
+    
+    <script>
+        // Get references to elements
+        const widget = document.getElementById('waynWidget');
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const status = document.getElementById('status');
+        const tokenDisplay = document.getElementById('tokenDisplay');
+        const verifiedDisplay = document.getElementById('verifiedDisplay');
+        const progressDisplay = document.getElementById('progressDisplay');
+        const lightThemeBtn = document.getElementById('lightTheme');
+        const darkThemeBtn = document.getElementById('darkTheme');
+        
+        // Theme switching
+        lightThemeBtn.addEventListener('click', () => {
+            widget.setAttribute('color', 'light');
+            lightThemeBtn.classList.add('active');
+            darkThemeBtn.classList.remove('active');
+        });
+        
+        darkThemeBtn.addEventListener('click', () => {
+            widget.setAttribute('color', 'dark');
+            darkThemeBtn.classList.add('active');
+            lightThemeBtn.classList.remove('active');
+        });
+        
+        // Widget event listeners
+        widget.addEventListener('wayn:solve', (event) => {
+            console.log('✅ CAPTCHA solved!', event.detail);
+            submitBtn.disabled = false;
+            tokenDisplay.textContent = event.detail.token;
+            verifiedDisplay.textContent = 'Yes ✓';
+            showStatus('CAPTCHA verified successfully! You can now submit the form.', 'success');
+        });
+        
+        widget.addEventListener('wayn:progress', (event) => {
+            console.log('⏳ Progress:', event.detail.progress + '%');
+            progressDisplay.textContent = event.detail.progress + '%';
+        });
+        
+        widget.addEventListener('wayn:error', (event) => {
+            console.error('❌ CAPTCHA error:', event.detail.error);
+            submitBtn.disabled = true;
+            showStatus('CAPTCHA error: ' + event.detail.error, 'error');
+        });
+        
+        widget.addEventListener('wayn:reset', () => {
+            console.log('🔄 CAPTCHA reset');
+            submitBtn.disabled = true;
+            tokenDisplay.textContent = 'None';
+            verifiedDisplay.textContent = 'No';
+            progressDisplay.textContent = '0%';
+            hideStatus();
+        });
+        
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!widget.isVerified) {
+                showStatus('Please complete the CAPTCHA first!', 'error');
+                return;
+            }
+            
+            // Simulate form submission
+            showStatus('Form submitted successfully! Token: ' + widget.token, 'success');
+            
+            // In a real application, you would send the form data to your server
+            // along with the CAPTCHA token for verification
+            const formData = new FormData(form);
+            formData.append('wayn-token', widget.token);
+            
+            console.log('📤 Form data:', Object.fromEntries(formData));
+        });
+        
+        // Helper functions
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+        }
+        
+        function hideStatus() {
+            status.style.display = 'none';
+        }
+        
+        // Initialize display
+        updateDisplay();
+        
+        function updateDisplay() {
+            tokenDisplay.textContent = widget.token || 'None';
+            verifiedDisplay.textContent = widget.isVerified ? 'Yes ✓' : 'No';
+            submitBtn.disabled = !widget.isVerified;
+        }
+        
+        // Update display periodically (for demo purposes)
+        setInterval(updateDisplay, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+import React, { useRef, useEffect } from 'react';
+export const Widget = ({ api, color = 'light', workerCount = navigator.hardwareConcurrency || 4, onSolve, onProgress, onError, onReset, className = '', style, disabled = false, i18n = {} }) => {
+    const widgetRef = useRef(null);
+    useEffect(() => {
+        // Dynamically import the core widget to avoid SSR issues
+        const setupWidget = async () => {
+            // Import the core widget
+            await import('../core');
+            if (widgetRef.current) {
+                const widget = widgetRef.current;
+                // Set up event listeners
+                if (onSolve) {
+                    widget.addEventListener('wayn:solve', (event) => {
+                        onSolve(event.detail.token);
+                    });
+                }
+                if (onProgress) {
+                    widget.addEventListener('wayn:progress', (event) => {
+                        onProgress(event.detail.progress);
+                    });
+                }
+                if (onError) {
+                    widget.addEventListener('wayn:error', (event) => {
+                        onError(event.detail.error);
+                    });
+                }
+                if (onReset) {
+                    widget.addEventListener('wayn:reset', onReset);
+                }
+            }
+        };
+        setupWidget();
+    }, [onSolve, onProgress, onError, onReset]);
+    const widgetProps = {
+        api,
+        color,
+        'worker-count': workerCount,
+    };
+    if (disabled) {
+        widgetProps.disabled = '';
+    }
+    if (i18n.initialState) {
+        widgetProps['data-i18n-initial-state'] = i18n.initialState;
+    }
+    if (i18n.verifying) {
+        widgetProps['data-i18n-verifying'] = i18n.verifying;
+    }
+    if (i18n.verified) {
+        widgetProps['data-i18n-verified'] = i18n.verified;
+    }
+    if (i18n.error) {
+        widgetProps['data-i18n-error'] = i18n.error;
+    }
+    return React.createElement('wayn-widget', {
+        ref: widgetRef,
+        className,
+        style,
+        ...widgetProps
+    });
+};
+export default Widget;
+//# sourceMappingURL=Widget.js.map

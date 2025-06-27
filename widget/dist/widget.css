@@ -1,0 +1,209 @@
+/* Wayn Widget Styles */
+.wayn-widget {
+  --wayn-background: #fdfdfd;
+  --wayn-border-color: #dddddd8f;
+  --wayn-border-radius: 14px;
+  --wayn-color: #212121;
+  --wayn-checkbox-size: 25px;
+  --wayn-checkbox-border: 1px solid #aaaaaad1;
+  --wayn-checkbox-border-radius: 6px;
+  --wayn-checkbox-background: #fafafa91;
+  --wayn-gap: 15px;
+  --wayn-widget-height: 30px;
+  --wayn-widget-width: 230px;
+  --wayn-widget-padding: 14px;
+  --wayn-spinner-color: #000;
+  --wayn-spinner-background-color: #eee;
+  --wayn-spinner-thickness: 5px;
+  --wayn-font: system, -apple-system, "BlinkMacSystemFont", ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", "Ubuntu", "arial", sans-serif;
+}
+
+/* Dark theme */
+.wayn-widget--dark {
+  --wayn-background: #2d2d2d;
+  --wayn-border-color: #4a4a4a;
+  --wayn-color: #ffffff;
+  --wayn-checkbox-background: #404040;
+  --wayn-checkbox-border: 1px solid #666666;
+  --wayn-spinner-color: #ffffff;
+  --wayn-spinner-background-color: #555555;
+}
+
+.wayn-widget * {
+  box-sizing: border-box;
+}
+
+.wayn-widget {
+  background-color: var(--wayn-background);
+  border: 1px solid var(--wayn-border-color);
+  border-radius: var(--wayn-border-radius);
+  user-select: none;
+  height: var(--wayn-widget-height);
+  width: var(--wayn-widget-width);
+  display: flex;
+  align-items: center;
+  padding: var(--wayn-widget-padding);
+  gap: var(--wayn-gap);
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.2s;
+  position: relative;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  overflow: hidden;
+  color: var(--wayn-color);
+  font-family: var(--wayn-font);
+}
+
+.wayn-widget:hover {
+  filter: brightness(98%);
+}
+
+.wayn-widget:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+.wayn-widget__content {
+  display: flex;
+  align-items: center;
+  gap: var(--wayn-gap);
+  flex: 1;
+}
+
+.wayn-widget__checkbox {
+  width: var(--wayn-checkbox-size);
+  height: var(--wayn-checkbox-size);
+  border: var(--wayn-checkbox-border);
+  border-radius: var(--wayn-checkbox-border-radius);
+  background-color: var(--wayn-checkbox-background);
+  transition: opacity 0.2s;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.wayn-widget__text {
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+  user-select: none;
+  transition: opacity 0.2s;
+  font-family: var(--wayn-font);
+}
+
+/* Verifying state */
+.wayn-widget--verifying .wayn-widget__checkbox {
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.1);
+  border: none;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--wayn-spinner-color) 0%, 
+    var(--wayn-spinner-color) var(--progress, 0%), 
+    var(--wayn-spinner-background-color) var(--progress, 0%), 
+    var(--wayn-spinner-background-color) 100%
+  );
+  position: relative;
+}
+
+.wayn-widget--verifying .wayn-widget__checkbox::after {
+  content: "";
+  background-color: var(--wayn-background);
+  width: calc(100% - var(--wayn-spinner-thickness));
+  height: calc(100% - var(--wayn-spinner-thickness));
+  border-radius: 50%;
+  margin: calc(var(--wayn-spinner-thickness) / 2);
+}
+
+/* Verified state */
+.wayn-widget--verified .wayn-widget__checkbox {
+  border: 1px solid transparent;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cstyle%3E%40keyframes%20anim%7B0%25%7Bstroke-dashoffset%3A23.21320343017578px%7Dto%7Bstroke-dashoffset%3A0%7D%7D%3C%2Fstyle%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%2300a67d%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22m5%2012%205%205L20%207%22%20style%3D%22stroke-dashoffset%3A0%3Bstroke-dasharray%3A23.21320343017578px%3Banimation%3Aanim%20.5s%20ease%22%2F%3E%3C%2Fsvg%3E");
+  background-size: cover;
+}
+
+.wayn-widget--verified {
+  cursor: default;
+}
+
+/* Error state */
+.wayn-widget--error .wayn-widget__checkbox {
+  border: 1px solid transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23f55b50' d='M11 15h2v2h-2zm0-8h2v6h-2zm1-5C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 18a8 8 0 0 1-8-8a8 8 0 0 1 8-8a8 8 0 0 1 8 8a8 8 0 0 1-8 8'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+.wayn-widget--error {
+  cursor: pointer;
+}
+
+/* Credits */
+.wayn-widget__credits {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: var(--wayn-color);
+  opacity: 0.8;
+  text-decoration: none;
+  font-family: var(--wayn-font);
+}
+
+.wayn-widget__credits:hover {
+  opacity: 1;
+}
+
+.wayn-widget__credits-text {
+  display: none;
+  text-decoration: underline;
+}
+
+.wayn-widget__credits:hover .wayn-widget__credits-text {
+  display: inline-block;
+}
+
+/* Disabled state */
+.wayn-widget[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.wayn-widget--verifying {
+  cursor: progress;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .wayn-widget {
+    --wayn-widget-width: 200px;
+    --wayn-widget-padding: 12px;
+  }
+  
+  .wayn-widget__text {
+    font-size: 14px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .wayn-widget {
+    --wayn-border-color: #000000;
+    --wayn-checkbox-border: 2px solid #000000;
+  }
+  
+  .wayn-widget--dark {
+    --wayn-border-color: #ffffff;
+    --wayn-checkbox-border: 2px solid #ffffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .wayn-widget,
+  .wayn-widget__checkbox,
+  .wayn-widget__text {
+    transition: none;
+  }
+}
