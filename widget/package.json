@@ -54,6 +54,9 @@
     "prepublishOnly": "npm run build",
     "demo": "open example.html"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
