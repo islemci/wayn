@@ -181,7 +181,7 @@ function useCheckpoint(config) {
 const CheckpointProvider = ({ children, config, ...rest }) => {
     const { isVerified, isLoading, error, retry } = useCheckpointVerification({ config, ...rest });
     if (isLoading) {
-        const LoadingComponent = config.loadingComponent || DefaultLoading;
+        const LoadingComponent = rest.loadingComponent || DefaultLoading;
         return <LoadingComponent />;
     }
     if (!isVerified) {
@@ -191,7 +191,7 @@ const CheckpointProvider = ({ children, config, ...rest }) => {
             window.location.href = checkpointUrl;
             return null;
         }
-        const ErrorComponent = config.errorComponent || DefaultError;
+        const ErrorComponent = rest.errorComponent || DefaultError;
         return <ErrorComponent error={error || 'Unknown error'} onRetry={retry}/>;
     }
     return <>{children}</>;

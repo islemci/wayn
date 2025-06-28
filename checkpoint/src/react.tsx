@@ -1,3 +1,5 @@
+'use client'
+
 import React, { ComponentType, useEffect, useState } from 'react';
 import { CheckpointConfig } from './types';
 

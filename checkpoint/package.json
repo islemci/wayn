@@ -27,6 +27,9 @@
     "test-server": "npm run build && node test-server.js",
     "prepare": "npm run build"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.4",
