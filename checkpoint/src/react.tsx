@@ -203,7 +203,7 @@ export const CheckpointProvider: React.FC<CheckpointWrapperProps & { children: R
   const { isVerified, isLoading, error, retry } = useCheckpointVerification({ config, ...rest });
 
   if (isLoading) {
-    const LoadingComponent = config.loadingComponent || DefaultLoading;
+    const LoadingComponent = rest.loadingComponent || DefaultLoading;
     return <LoadingComponent />;
   }
 
@@ -215,7 +215,7 @@ export const CheckpointProvider: React.FC<CheckpointWrapperProps & { children: R
       return null;
     }
 
-    const ErrorComponent = config.errorComponent || DefaultError;
+    const ErrorComponent = rest.errorComponent || DefaultError;
     return <ErrorComponent error={error || 'Unknown error'} onRetry={retry} />;
   }
 
