@@ -51,7 +51,6 @@
     "build:react": "tsc -p tsconfig.react.json",
     "build:bundle": "node build.js",
     "dev": "npm run build:core -- --watch",
-    "prepublishOnly": "npm run build",
     "demo": "open example.html"
   },
   "publishConfig": {
